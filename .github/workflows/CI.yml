@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  go:
+    name: Go
+    permissions:
+      contents: read
+    uses: FollowTheProcess/ci/.github/workflows/Go.yml@v4
+
+  nix:
+    name: Nix
+    permissions:
+      contents: read
+    uses: FollowTheProcess/ci/.github/workflows/Nix.yml@v4
