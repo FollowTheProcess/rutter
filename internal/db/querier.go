@@ -24,6 +24,9 @@ type Querier interface {
 	// and exit are known. Returns the id so FinishCommand can
 	// update it with exit and duration.
 	StartCommand(ctx context.Context, arg StartCommandParams) (int64, error)
+	// Fetches the most recently started command matching the given
+	// prefix. Used to power shell autosuggestion.
+	SuggestByPrefix(ctx context.Context, prefix string) (string, error)
 }
 
 var _ Querier = (*Queries)(nil)
