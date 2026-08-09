@@ -7,16 +7,10 @@ package db
 
 import (
 	"context"
-	"time"
 )
 
 const listCandidatesInDirectory = `-- name: ListCandidatesInDirectory :many
-select
-    cmd,
-    cwd,
-    started_at,
-    duration,
-    exit
+select id, cmd, cwd, session, started_at, duration, exit
 from history
 where
     id in (
@@ -33,27 +27,21 @@ type ListCandidatesInDirectoryParams struct {
 	Limit int64  `json:"limit"`
 }
 
-type ListCandidatesInDirectoryRow struct {
-	Cmd       string        `json:"cmd"`
-	Cwd       string        `json:"cwd"`
-	StartedAt time.Time     `json:"started_at"`
-	Duration  time.Duration `json:"duration"`
-	Exit      int64         `json:"exit"`
-}
-
 // Fetches N history entries scoped to the current directory only.
-func (q *Queries) ListCandidatesInDirectory(ctx context.Context, arg ListCandidatesInDirectoryParams) ([]ListCandidatesInDirectoryRow, error) {
+func (q *Queries) ListCandidatesInDirectory(ctx context.Context, arg ListCandidatesInDirectoryParams) ([]History, error) {
 	rows, err := q.db.QueryContext(ctx, listCandidatesInDirectory, arg.Cwd, arg.Limit)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []ListCandidatesInDirectoryRow
+	var items []History
 	for rows.Next() {
-		var i ListCandidatesInDirectoryRow
+		var i History
 		if err := rows.Scan(
+			&i.ID,
 			&i.Cmd,
 			&i.Cwd,
+			&i.Session,
 			&i.StartedAt,
 			&i.Duration,
 			&i.Exit,

@@ -1,11 +1,6 @@
 -- name: ListCandidatesInDirectory :many
 -- Fetches N history entries scoped to the current directory only.
-select
-    cmd,
-    cwd,
-    started_at,
-    duration,
-    exit
+select *
 from history
 where
     id in (

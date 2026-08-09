@@ -7,16 +7,10 @@ package db
 
 import (
 	"context"
-	"time"
 )
 
 const listCandidates = `-- name: ListCandidates :many
-select
-    cmd,
-    cwd,
-    started_at,
-    duration,
-    exit
+select id, cmd, cwd, session, started_at, duration, exit
 from history
 where
     id in (
@@ -27,28 +21,22 @@ order by started_at desc
 limit ?
 `
 
-type ListCandidatesRow struct {
-	Cmd       string        `json:"cmd"`
-	Cwd       string        `json:"cwd"`
-	StartedAt time.Time     `json:"started_at"`
-	Duration  time.Duration `json:"duration"`
-	Exit      int64         `json:"exit"`
-}
-
 // Fetches N history entries scoped globally, i.e. not bound by session
 // or current directory.
-func (q *Queries) ListCandidates(ctx context.Context, limit int64) ([]ListCandidatesRow, error) {
+func (q *Queries) ListCandidates(ctx context.Context, limit int64) ([]History, error) {
 	rows, err := q.db.QueryContext(ctx, listCandidates, limit)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []ListCandidatesRow
+	var items []History
 	for rows.Next() {
-		var i ListCandidatesRow
+		var i History
 		if err := rows.Scan(
+			&i.ID,
 			&i.Cmd,
 			&i.Cwd,
+			&i.Session,
 			&i.StartedAt,
 			&i.Duration,
 			&i.Exit,

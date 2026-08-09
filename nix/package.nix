@@ -24,7 +24,7 @@ in
         pname = "rutter";
         inherit version;
         src = lib.sources.cleanSource inputs.self;
-        vendorHash = "sha256-ap+rlbLtrhOppB06dJsv9Iuz7RUAr0JG3QkXQD2w+Yg=";
+        vendorHash = "sha256-qa6zBmihuFiIiF9ugsdjot8MXtuQjlw4WEcZzNuDxX8=";
         ldflags = [
           "-s"
           "-w"
