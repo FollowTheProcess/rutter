@@ -15,6 +15,7 @@ _: {
           nilaway
           nix-update
           pkgsite
+          sqlfluff
           sqlc
           sqlite
           typos

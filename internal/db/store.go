@@ -17,10 +17,14 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+// defaultDirPermissions is the file mode permissions used for any directories
+// created by this package.
+const defaultDirPermissions = 0o700
+
 // Store represents the history data storage backend and manages
-// the state of the backing DB.
+// the lifecycle of the backing DB.
 type Store struct {
-	*Queries
+	Query *Queries
 
 	sql *sql.DB
 }
@@ -28,9 +32,12 @@ type Store struct {
 // Open connects to the database at path, creating and performing
 // migrations if needed.
 //
+// If the path does not exist, it's parent directories will be created
+// as necessary.
+//
 // Once opened, a Store must be deferred closed with [Store.Close].
 func Open(ctx context.Context, path string) (*Store, error) {
-	if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
+	if err := os.MkdirAll(filepath.Dir(path), defaultDirPermissions); err != nil {
 		return nil, fmt.Errorf("failed to create DB parent dir: %w", err)
 	}
 
@@ -58,8 +65,8 @@ func Open(ctx context.Context, path string) (*Store, error) {
 	}
 
 	return &Store{
-		Queries: New(sqlDB),
-		sql:     sqlDB,
+		Query: New(sqlDB),
+		sql:   sqlDB,
 	}, nil
 }
 

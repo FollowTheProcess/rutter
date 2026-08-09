@@ -1,12 +1,7 @@
 -- name: ListCandidates :many
 -- Fetches N history entries scoped globally, i.e. not bound by session
 -- or current directory.
-select
-    cmd,
-    cwd,
-    started_at,
-    duration,
-    exit
+select *
 from history
 where
     id in (
