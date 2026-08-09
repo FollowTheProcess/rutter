@@ -12,9 +12,9 @@ sources = ["**/*.go", "go.mod", "go.sum"]
 run = "go mod tidy"
 
 [tasks.gen]
-description = "Run go generate"
-sources = ["**/*.go"]
-run = "go generate ./..."
+description = "Run code generation"
+sources = ["**/*.go", "**/*.sql"]
+run = ["go generate ./...", "sqlc generate"]
 
 [tasks.fmt]
 description = "Run go fmt on all source files"
@@ -58,7 +58,12 @@ run = "go test ./... -run None -benchmem -bench ."
 description = "Run linting"
 depends = ["fmt"]
 sources = ["**/*.go", ".golangci.yml"]
-run = ["golangci-lint run --fix ./...", "typos", "nilaway ./..."]
+run = [
+  "golangci-lint run --fix ./...",
+  "typos",
+  "nilaway ./...",
+  "sqlc vet",
+]
 
 [tasks.doc]
 description = "Render the pkg docs locally"

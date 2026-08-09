@@ -6,6 +6,7 @@ _: {
         packages = with pkgs; [
           go
           golangci-lint
+          goose
           goperf
           gopls
           goreleaser
@@ -14,6 +15,8 @@ _: {
           nilaway
           nix-update
           pkgsite
+          sqlc
+          sqlite
           typos
         ];
 

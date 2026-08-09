@@ -6,6 +6,10 @@ _: {
     shellcheck.enable = true;
     shfmt.enable = true;
     statix.enable = true;
+    sqlfluff = {
+      enable = true;
+      dialect = "sqlite";
+    };
     yamlfmt = {
       enable = true;
       settings.formatter = {
