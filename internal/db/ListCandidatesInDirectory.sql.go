@@ -27,7 +27,7 @@ type ListCandidatesInDirectoryParams struct {
 	Limit int64  `json:"limit"`
 }
 
-// Fetches N history entries scoped to the current directory only.
+// Fetches N unique history entries scoped to the current directory only.
 func (q *Queries) ListCandidatesInDirectory(ctx context.Context, arg ListCandidatesInDirectoryParams) ([]History, error) {
 	rows, err := q.db.QueryContext(ctx, listCandidatesInDirectory, arg.Cwd, arg.Limit)
 	if err != nil {

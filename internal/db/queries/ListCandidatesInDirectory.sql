@@ -1,5 +1,5 @@
 -- name: ListCandidatesInDirectory :many
--- Fetches N history entries scoped to the current directory only.
+-- Fetches N unique history entries scoped to the current directory only.
 select *
 from history
 where

@@ -1,7 +1,12 @@
 -- name: ListCandidatesInSession :many
--- Fetches N history entries, scoped to the current session.
+-- Fetches N unique history entries, scoped to the current session.
 select *
 from history
-where session = ?
+where
+    id in (
+        select max(h.id) from history h
+        where h.session = ?
+        group by h.cmd
+    )
 order by started_at desc
 limit ?;

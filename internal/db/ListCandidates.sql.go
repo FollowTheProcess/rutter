@@ -14,14 +14,14 @@ select id, cmd, cwd, session, started_at, duration, exit
 from history
 where
     id in (
-        select max(id) from history
-        group by cmd
+        select max(h.id) from history h
+        group by h.cmd
     )
 order by started_at desc
 limit ?
 `
 
-// Fetches N history entries scoped globally, i.e. not bound by session
+// Fetches N unique history entries scoped globally, i.e. not bound by session
 // or current directory.
 func (q *Queries) ListCandidates(ctx context.Context, limit int64) ([]History, error) {
 	rows, err := q.db.QueryContext(ctx, listCandidates, limit)

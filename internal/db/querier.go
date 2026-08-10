@@ -13,12 +13,12 @@ type Querier interface {
 	// populating duration and exit. Run from the post-exec hook once
 	// the command's duration and exit code are known.
 	FinishCommand(ctx context.Context, arg FinishCommandParams) error
-	// Fetches N history entries scoped globally, i.e. not bound by session
+	// Fetches N unique history entries scoped globally, i.e. not bound by session
 	// or current directory.
 	ListCandidates(ctx context.Context, limit int64) ([]History, error)
-	// Fetches N history entries scoped to the current directory only.
+	// Fetches N unique history entries scoped to the current directory only.
 	ListCandidatesInDirectory(ctx context.Context, arg ListCandidatesInDirectoryParams) ([]History, error)
-	// Fetches N history entries, scoped to the current session.
+	// Fetches N unique history entries, scoped to the current session.
 	ListCandidatesInSession(ctx context.Context, arg ListCandidatesInSessionParams) ([]History, error)
 	// Inserts the command from the pre-exec hook, before duration
 	// and exit are known. Returns the id so FinishCommand can

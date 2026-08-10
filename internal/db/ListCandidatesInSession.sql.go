@@ -12,7 +12,12 @@ import (
 const listCandidatesInSession = `-- name: ListCandidatesInSession :many
 select id, cmd, cwd, session, started_at, duration, exit
 from history
-where session = ?
+where
+    id in (
+        select max(h.id) from history h
+        where h.session = ?
+        group by h.cmd
+    )
 order by started_at desc
 limit ?
 `
@@ -22,7 +27,7 @@ type ListCandidatesInSessionParams struct {
 	Limit   int64  `json:"limit"`
 }
 
-// Fetches N history entries, scoped to the current session.
+// Fetches N unique history entries, scoped to the current session.
 func (q *Queries) ListCandidatesInSession(ctx context.Context, arg ListCandidatesInSessionParams) ([]History, error) {
 	rows, err := q.db.QueryContext(ctx, listCandidatesInSession, arg.Session, arg.Limit)
 	if err != nil {
