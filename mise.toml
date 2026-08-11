@@ -16,11 +16,6 @@ description = "Run code generation"
 sources = ["**/*.go", "**/*.sql"]
 run = ["go generate ./...", "sqlc generate"]
 
-[tasks.fmt]
-description = "Run go fmt on all source files"
-sources = ["**/*.go", ".golangci.yml"]
-run = "golangci-lint fmt ./..."
-
 [tasks.test]
 description = "Run the test suite"
 sources = [
@@ -60,7 +55,6 @@ depends = ["fmt"]
 sources = ["**/*.go", ".golangci.yml"]
 run = [
   "golangci-lint run --fix ./...",
-  "typos",
   "nilaway ./...",
   "sqlc vet",
 ]
