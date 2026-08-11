@@ -11,9 +11,9 @@ import (
 )
 
 const startCommand = `-- name: StartCommand :one
-insert into history (cmd, cwd, session, started_at)
-values (?, ?, ?, ?)
-returning id
+INSERT INTO history (cmd, cwd, session, started_at)
+VALUES (?, ?, ?, ?)
+RETURNING id
 `
 
 type StartCommandParams struct {

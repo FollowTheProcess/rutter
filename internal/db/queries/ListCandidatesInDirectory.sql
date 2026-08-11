@@ -1,12 +1,12 @@
 -- name: ListCandidatesInDirectory :many
 -- Fetches N unique history entries scoped to the current directory only.
-select *
-from history
-where
-    id in (
-        select max(h.id) from history h
-        where h.cwd = ?
-        group by h.cmd
+SELECT *
+FROM history
+WHERE
+    id IN (
+        SELECT max(h.id) FROM history h
+        WHERE h.cwd = ?
+        GROUP BY h.cmd
     )
-order by started_at desc
-limit ?;
+ORDER BY started_at DESC
+LIMIT ?;

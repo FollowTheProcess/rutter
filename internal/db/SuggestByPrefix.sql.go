@@ -10,11 +10,11 @@ import (
 )
 
 const suggestByPrefix = `-- name: SuggestByPrefix :one
-select cmd
-from history
-where instr(cmd, ?1) = 1
-order by started_at desc
-limit 1
+SELECT cmd
+FROM history
+WHERE instr(cmd, ?1) = 1
+ORDER BY started_at DESC
+LIMIT 1
 `
 
 // Fetches the most recently started command matching the given

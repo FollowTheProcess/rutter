@@ -10,15 +10,15 @@ import (
 )
 
 const listCandidates = `-- name: ListCandidates :many
-select id, cmd, cwd, session, started_at, duration, exit
-from history
-where
-    id in (
-        select max(h.id) from history h
-        group by h.cmd
+SELECT id, cmd, cwd, session, started_at, duration, exit
+FROM history
+WHERE
+    id IN (
+        SELECT max(h.id) FROM history h
+        GROUP BY h.cmd
     )
-order by started_at desc
-limit ?
+ORDER BY started_at DESC
+LIMIT ?
 `
 
 // Fetches N unique history entries scoped globally, i.e. not bound by session

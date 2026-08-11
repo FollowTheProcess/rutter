@@ -12,9 +12,9 @@ import (
 )
 
 const finishCommand = `-- name: FinishCommand :exec
-update history
-set duration = ?, exit = ?
-where id = ?
+UPDATE history
+SET duration = ?, exit = ?
+WHERE id = ?
 `
 
 type FinishCommandParams struct {

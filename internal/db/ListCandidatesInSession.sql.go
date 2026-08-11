@@ -10,16 +10,16 @@ import (
 )
 
 const listCandidatesInSession = `-- name: ListCandidatesInSession :many
-select id, cmd, cwd, session, started_at, duration, exit
-from history
-where
-    id in (
-        select max(h.id) from history h
-        where h.session = ?
-        group by h.cmd
+SELECT id, cmd, cwd, session, started_at, duration, exit
+FROM history
+WHERE
+    id IN (
+        SELECT max(h.id) FROM history h
+        WHERE h.session = ?
+        GROUP BY h.cmd
     )
-order by started_at desc
-limit ?
+ORDER BY started_at DESC
+LIMIT ?
 `
 
 type ListCandidatesInSessionParams struct {
