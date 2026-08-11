@@ -42,3 +42,10 @@ func (a App) Finish(id, exit int, duration time.Duration) error {
 
 	return nil
 }
+
+// Init implements the init subcommand.
+func (a App) Init(shell string) error {
+	fmt.Fprintf(a.stdout, "Printing shell script for %s\n", shell)
+
+	return nil
+}

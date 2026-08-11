@@ -5,6 +5,8 @@ _: {
       treefmt = {
         programs = {
           deadnix.enable = true;
+          dockerfmt.enable = true;
+          just.enable = true;
           nixfmt.enable = true;
           shellcheck.enable = true;
           shfmt.enable = true;

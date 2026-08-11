@@ -11,7 +11,7 @@ _: {
           gopls
           goreleaser
           gotools
-          mise
+          just
           nilaway
           nix-update
           pkgsite
