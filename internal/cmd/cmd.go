@@ -2,9 +2,6 @@
 package cmd
 
 import (
-	"context"
-	"fmt"
-
 	"go.followtheprocess.codes/cli"
 )
 
@@ -23,10 +20,6 @@ func Build() (*cli.Command, error) {
 		cli.Version(version),
 		cli.Commit(commit),
 		cli.BuildDate(date),
-		cli.Run(func(ctx context.Context, cmd *cli.Command) error {
-			fmt.Println("Hello from rutter")
-
-			return nil
-		}),
+		cli.SubCommands(uuidCmd, add, finish),
 	)
 }

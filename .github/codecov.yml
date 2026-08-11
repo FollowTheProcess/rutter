@@ -1,0 +1,3 @@
+ignore:
+  - internal/cmd  # Literally just CLI definition
+  - cmd/rutter/main.go  # Purely the entry point
