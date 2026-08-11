@@ -91,7 +91,11 @@ run = ["go clean ./...", "rm -rf {{ vars.COV_DATA }} ./bin ./dist"]
 
 [tasks.update]
 description = "Updates dependencies in go.mod and go.sum"
-run = ["go get -u ./...", "go mod tidy"]
+run = [
+  "go get -u ./...",
+  "go mod tidy",
+  "nix-update --flake default --version=skip",
+]
 
 [tasks.uninstall]
 description = "Uninstall the project from your machine"

@@ -18,6 +18,7 @@ func uuidCmd() (*cli.Command, error) {
 		"uuid",
 		cli.Short("Generate a rutter session id"),
 		cli.Run(func(ctx context.Context, cmd *cli.Command) error {
+			// Not hooked up to app as this needs no DB or application state
 			id, err := uuid.NewRandom()
 			if err != nil {
 				return fmt.Errorf("failed to generate uuid: %w", err)

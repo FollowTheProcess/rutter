@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 
 	"go.followtheprocess.codes/cli"
+	"go.followtheprocess.codes/rutter/internal/app"
 )
 
 // add returns the add subcommand.
@@ -24,9 +24,9 @@ func add() (*cli.Command, error) {
 		cli.Short("Adds a new command to the history, returning it's ID"),
 		cli.Arg(&command, "command", "The command to add"),
 		cli.Run(func(ctx context.Context, cmd *cli.Command) error {
-			fmt.Fprintf(cmd.Stdout(), "Adding %s\n", command)
+			app := app.New(cmd.Stdin(), cmd.Stdout(), cmd.Stderr())
 
-			return nil
+			return app.Add(command)
 		}),
 	)
 }

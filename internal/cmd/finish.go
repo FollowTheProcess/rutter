@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"go.followtheprocess.codes/cli"
+	"go.followtheprocess.codes/rutter/internal/app"
 )
 
 // finish builds the finish subcommand.
@@ -26,9 +26,9 @@ func finish() (*cli.Command, error) {
 		cli.Arg(&exit, "exit", "The exit code of the command"),
 		cli.Arg(&duration, "duration", "The duration of the command's execution"),
 		cli.Run(func(ctx context.Context, cmd *cli.Command) error {
-			fmt.Fprintf(cmd.Stdout(), "Updating command %d with exit %d and duration %s", id, exit, duration)
+			app := app.New(cmd.Stdin(), cmd.Stdout(), cmd.Stderr())
 
-			return nil
+			return app.Finish(id, exit, duration)
 		}),
 	)
 }
