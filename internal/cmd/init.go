@@ -5,6 +5,7 @@ import (
 
 	"go.followtheprocess.codes/cli"
 	"go.followtheprocess.codes/rutter/internal/app"
+	"go.followtheprocess.codes/rutter/internal/xdg"
 )
 
 // initCmd returns the init subcommand.
@@ -24,7 +25,17 @@ func initCmd() (*cli.Command, error) {
 				Stdout: cmd.Stdout(),
 				Stderr: cmd.Stderr(),
 			}
-			app := app.New(io)
+
+			data, err := xdg.DataHome()
+			if err != nil {
+				return err
+			}
+
+			app, err := app.New(ctx, io, app.DBPath(data))
+			if err != nil {
+				return err
+			}
+			defer app.Close()
 
 			return app.Init(shell)
 		}),

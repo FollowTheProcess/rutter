@@ -6,6 +6,7 @@ import (
 
 	"go.followtheprocess.codes/cli"
 	"go.followtheprocess.codes/rutter/internal/app"
+	"go.followtheprocess.codes/rutter/internal/xdg"
 )
 
 // finish builds the finish subcommand.
@@ -31,7 +32,17 @@ func finish() (*cli.Command, error) {
 				Stdout: cmd.Stdout(),
 				Stderr: cmd.Stderr(),
 			}
-			app := app.New(io)
+
+			data, err := xdg.DataHome()
+			if err != nil {
+				return err
+			}
+
+			app, err := app.New(ctx, io, app.DBPath(data))
+			if err != nil {
+				return err
+			}
+			defer app.Close()
 
 			return app.Finish(id, exit, duration)
 		}),
