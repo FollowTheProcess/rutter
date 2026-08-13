@@ -2,10 +2,9 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 
 	"go.followtheprocess.codes/cli"
-	"go.followtheprocess.codes/rutter/internal/app"
-	"go.followtheprocess.codes/rutter/internal/xdg"
 )
 
 // initCmd returns the init subcommand.
@@ -20,24 +19,11 @@ func initCmd() (*cli.Command, error) {
 		cli.Short("Print rutter's shell init script"),
 		cli.Arg(&shell, "shell", "Choice of shell, one of 'zsh', 'fish' or 'nu'"),
 		cli.Run(func(ctx context.Context, cmd *cli.Command) error {
-			io := app.IO{
-				Stdin:  cmd.Stdin(),
-				Stdout: cmd.Stdout(),
-				Stderr: cmd.Stderr(),
-			}
+			// Not hooked up to app as it's a static script that
+			// doesn't need the DB
+			fmt.Fprintf(cmd.Stdout(), "A script here...\n")
 
-			data, err := xdg.DataHome()
-			if err != nil {
-				return err
-			}
-
-			app, err := app.New(ctx, io, app.DBPath(data))
-			if err != nil {
-				return err
-			}
-			defer app.Close()
-
-			return app.Init(shell)
+			return nil
 		}),
 	)
 }

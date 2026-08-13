@@ -23,20 +23,24 @@ type IO struct {
 
 // App represents the rutter program.
 type App struct {
-	io    IO
-	store *db.Store
+	io        IO
+	store     *db.Store
+	cwd       string
+	sessionID string
 }
 
-// New create a new [App].
-func New(ctx context.Context, io IO, dbPath string) (App, error) {
+// New creates a new [App].
+func New(ctx context.Context, io IO, cwd, sessionID, dbPath string) (App, error) {
 	store, err := db.Open(ctx, dbPath)
 	if err != nil {
 		return App{}, err
 	}
 
 	return App{
-		io:    io,
-		store: store,
+		io:        io,
+		store:     store,
+		cwd:       cwd,
+		sessionID: sessionID,
 	}, nil
 }
 
@@ -53,23 +57,32 @@ func (a App) Close() error {
 
 // Add implements the add subcommand.
 //
-// It inserts the command into the history DB.
-func (a App) Add(command string) error {
-	fmt.Fprintf(a.io.Stdout, "Adding command '%s'\n", command)
+// It inserts the command into the history DB, and returns
+// its ID.
+func (a App) Add(ctx context.Context, command string) (int, error) {
+	id, err := a.store.Query.StartCommand(ctx, db.StartCommandParams{
+		Cmd:       command,
+		Cwd:       a.cwd,
+		Session:   a.sessionID,
+		StartedAt: time.Now().UTC(),
+	})
+	if err != nil {
+		return 0, fmt.Errorf("failed to start command: %w", err)
+	}
 
-	return nil
+	return int(id), nil
 }
 
 // Finish implements the finish subcommand.
-func (a App) Finish(id, exit int, duration time.Duration) error {
-	fmt.Fprintf(a.io.Stdout, "Finishing command %d with exit %d and duration %s\n", id, exit, duration)
-
-	return nil
-}
-
-// Init implements the init subcommand.
-func (a App) Init(shell string) error {
-	fmt.Fprintf(a.io.Stdout, "Printing shell script for %s\n", shell)
+func (a App) Finish(ctx context.Context, id, exit int, duration time.Duration) error {
+	err := a.store.Query.FinishCommand(ctx, db.FinishCommandParams{
+		Duration: duration,
+		Exit:     int64(exit),
+		ID:       int64(id),
+	})
+	if err != nil {
+		return fmt.Errorf("failed to finish command: %w", err)
+	}
 
 	return nil
 }

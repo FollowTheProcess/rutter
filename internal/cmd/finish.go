@@ -2,6 +2,9 @@ package cmd
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"os"
 	"time"
 
 	"go.followtheprocess.codes/cli"
@@ -38,13 +41,23 @@ func finish() (*cli.Command, error) {
 				return err
 			}
 
-			app, err := app.New(ctx, io, app.DBPath(data))
+			cwd, err := os.Getwd()
+			if err != nil {
+				return fmt.Errorf("failed to get current directory: %w", err)
+			}
+
+			sessionID := os.Getenv("RUTTER_SESSION_ID")
+			if sessionID == "" {
+				return errors.New("RUTTER_SESSION_ID is not set, ensure you source the shell init script")
+			}
+
+			app, err := app.New(ctx, io, cwd, sessionID, app.DBPath(data))
 			if err != nil {
 				return err
 			}
 			defer app.Close()
 
-			return app.Finish(id, exit, duration)
+			return app.Finish(ctx, id, exit, duration)
 		}),
 	)
 }
