@@ -19,7 +19,12 @@ func initCmd() (*cli.Command, error) {
 		cli.Short("Print rutter's shell init script"),
 		cli.Arg(&shell, "shell", "Choice of shell, one of 'zsh', 'fish' or 'nu'"),
 		cli.Run(func(ctx context.Context, cmd *cli.Command) error {
-			app := app.New(cmd.Stdin(), cmd.Stdout(), cmd.Stderr())
+			io := app.IO{
+				Stdin:  cmd.Stdin(),
+				Stdout: cmd.Stdout(),
+				Stderr: cmd.Stderr(),
+			}
+			app := app.New(io)
 
 			return app.Init(shell)
 		}),

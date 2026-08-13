@@ -24,7 +24,12 @@ func add() (*cli.Command, error) {
 		cli.Short("Adds a new command to the history, returning it's ID"),
 		cli.Arg(&command, "command", "The command to add"),
 		cli.Run(func(ctx context.Context, cmd *cli.Command) error {
-			app := app.New(cmd.Stdin(), cmd.Stdout(), cmd.Stderr())
+			io := app.IO{
+				Stdin:  cmd.Stdin(),
+				Stdout: cmd.Stdout(),
+				Stderr: cmd.Stderr(),
+			}
+			app := app.New(io)
 
 			return app.Add(command)
 		}),

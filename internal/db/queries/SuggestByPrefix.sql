@@ -3,6 +3,8 @@
 -- prefix. Used to power shell autosuggestion.
 SELECT cmd
 FROM history
-WHERE instr(cmd, sqlc.arg(prefix)) = 1
+WHERE
+    cmd >= sqlc.arg(prefix)
+    AND cmd < sqlc.arg(prefix) || char(1114111)
 ORDER BY started_at DESC
 LIMIT 1;

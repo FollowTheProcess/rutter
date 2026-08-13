@@ -12,7 +12,9 @@ import (
 const suggestByPrefix = `-- name: SuggestByPrefix :one
 SELECT cmd
 FROM history
-WHERE instr(cmd, ?1) = 1
+WHERE
+    cmd >= ?1
+    AND cmd < ?1 || char(1114111)
 ORDER BY started_at DESC
 LIMIT 1
 `
