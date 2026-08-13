@@ -26,7 +26,12 @@ func finish() (*cli.Command, error) {
 		cli.Arg(&exit, "exit", "The exit code of the command"),
 		cli.Arg(&duration, "duration", "The duration of the command's execution"),
 		cli.Run(func(ctx context.Context, cmd *cli.Command) error {
-			app := app.New(cmd.Stdin(), cmd.Stdout(), cmd.Stderr())
+			io := app.IO{
+				Stdin:  cmd.Stdin(),
+				Stdout: cmd.Stdout(),
+				Stderr: cmd.Stderr(),
+			}
+			app := app.New(io)
 
 			return app.Finish(id, exit, duration)
 		}),

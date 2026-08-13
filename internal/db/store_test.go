@@ -702,6 +702,57 @@ func TestSuggestByPrefix(t *testing.T) {
 			prefix:  "echo",
 			wantErr: true,
 		},
+		{
+			// A '%' in the prefix is a literal character, not a LIKE wildcard
+			name: "percent is literal",
+			seed: []db.History{
+				{
+					ID:        1,
+					Cmd:       "grep 100% file",
+					Cwd:       "/some/dir",
+					Session:   session,
+					StartedAt: now,
+					Duration:  375 * time.Millisecond,
+					Exit:      0,
+				},
+			},
+			prefix:  "grep %",
+			wantErr: true,
+		},
+		{
+			// An '_' in the prefix is a literal character, not a LIKE wildcard
+			name: "underscore is literal",
+			seed: []db.History{
+				{
+					ID:        1,
+					Cmd:       "ls myXfile",
+					Cwd:       "/some/dir",
+					Session:   session,
+					StartedAt: now,
+					Duration:  375 * time.Millisecond,
+					Exit:      0,
+				},
+			},
+			prefix:  "ls my_",
+			wantErr: true,
+		},
+		{
+			// The literal characters still match when they really are present
+			name: "percent matches literally",
+			seed: []db.History{
+				{
+					ID:        1,
+					Cmd:       "grep %pat file",
+					Cwd:       "/some/dir",
+					Session:   session,
+					StartedAt: now,
+					Duration:  375 * time.Millisecond,
+					Exit:      0,
+				},
+			},
+			prefix: "grep %",
+			want:   "grep %pat file",
+		},
 	}
 
 	for _, tt := range tests {

@@ -12,18 +12,19 @@ import (
 
 // App represents the rutter program.
 type App struct {
-	stdin  io.Reader
-	stdout io.Writer
-	stderr io.Writer
+	io IO
+}
+
+type IO struct {
+	Stdin  io.Reader
+	Stdout io.Writer
+	Stderr io.Writer
 }
 
 // New create a new [App].
-func New(stdin io.Reader, stdout, stderr io.Writer) App {
-	// TODO: This will obviously need the DB and all that
+func New(io IO) App {
 	return App{
-		stdin:  stdin,
-		stdout: stdout,
-		stderr: stderr,
+		io: io,
 	}
 }
 
@@ -31,21 +32,21 @@ func New(stdin io.Reader, stdout, stderr io.Writer) App {
 //
 // It inserts the command into the history DB.
 func (a App) Add(command string) error {
-	fmt.Fprintf(a.stdout, "Adding command '%s'\n", command)
+	fmt.Fprintf(a.io.Stdout, "Adding command '%s'\n", command)
 
 	return nil
 }
 
 // Finish implements the finish subcommand.
 func (a App) Finish(id, exit int, duration time.Duration) error {
-	fmt.Fprintf(a.stdout, "Finishing command %d with exit %d and duration %s\n", id, exit, duration)
+	fmt.Fprintf(a.io.Stdout, "Finishing command %d with exit %d and duration %s\n", id, exit, duration)
 
 	return nil
 }
 
 // Init implements the init subcommand.
 func (a App) Init(shell string) error {
-	fmt.Fprintf(a.stdout, "Printing shell script for %s\n", shell)
+	fmt.Fprintf(a.io.Stdout, "Printing shell script for %s\n", shell)
 
 	return nil
 }
