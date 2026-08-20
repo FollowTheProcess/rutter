@@ -86,3 +86,22 @@ func (a App) Finish(ctx context.Context, id, exit int, duration time.Duration) e
 
 	return nil
 }
+
+// SearchOptions holds the flags for the search command.
+type SearchOptions struct {
+	Directory string // Filter results to this directory
+	Session   string // Filter results to this session ID
+	Limit     int    // Maximum number of results to return
+}
+
+func (a App) Search(ctx context.Context, query string, options SearchOptions) error {
+	// TODO: This
+	return nil
+}
+
+// Suggest returns the best match for a command based on the text, used for
+// shell auto-suggestion.
+func (a App) Suggest(ctx context.Context, query string) error {
+	// TODO: This
+	return nil
+}
