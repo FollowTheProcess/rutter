@@ -11,22 +11,19 @@ import (
 	"go.followtheprocess.codes/rutter/internal/xdg"
 )
 
-// add returns the add subcommand.
-//
-// The add command is responsible for inserting a new command
-// in the history. A command added with add is not complete and
-// must be finished with the finish command to update it's exit code
-// and duration.
-//
-// The stored ID of the command is printed so the shell hook can
-// finalise it with the finish command.
-func add() (*cli.Command, error) {
-	var command string
+func search() (*cli.Command, error) {
+	var (
+		query   string
+		options app.SearchOptions
+	)
 
 	return cli.New(
-		"add",
-		cli.Short("Adds a new command to the history, returning it's ID"),
-		cli.Arg(&command, "command", "The command to add"),
+		"search",
+		cli.Short("Search through the shell history"),
+		cli.Arg(&query, "query", "History search term"),
+		cli.Flag(&options.Directory, "directory", 'd', "Filter results by directory"),
+		cli.Flag(&options.Session, "session", 's', "Filter results by session"),
+		cli.Flag(&options.Limit, "limit", 'l', "Maximum number of results to return", cli.FlagDefault(20)),
 		cli.Run(func(ctx context.Context, cmd *cli.Command) error {
 			io := app.IO{
 				Stdin:  cmd.Stdin(),
@@ -55,10 +52,7 @@ func add() (*cli.Command, error) {
 			}
 			defer app.Close()
 
-			// TODO: Print the app ID and then the shell script takes it
-			_, err = app.Add(ctx, command)
-
-			return err
+			return app.Search(ctx, query, options)
 		}),
 	)
 }

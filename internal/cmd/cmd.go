@@ -20,6 +20,6 @@ func Build() (*cli.Command, error) {
 		cli.Version(version),
 		cli.Commit(commit),
 		cli.BuildDate(date),
-		cli.SubCommands(initCmd, add, finish, uuidCmd),
+		cli.SubCommands(initCmd, add, finish, search, suggest, uuidCmd),
 	)
 }
