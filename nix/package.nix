@@ -12,7 +12,7 @@ in
       ...
     }:
     {
-      packages.default = pkgs.buildGoModule {
+      packages.default = pkgs.buildGo127Module {
         meta = {
           description = "Sail through your shell history ⚓";
           homepage = "https://github.com/FollowTheProcess/rutter";
@@ -24,7 +24,7 @@ in
         pname = "rutter";
         inherit version;
         src = lib.sources.cleanSource inputs.self;
-        vendorHash = "sha256-FzeKTHSK04Yaw1uw3tXapmntpFGFNsI2hC5VfhEiwY8=";
+        vendorHash = "sha256-6Y/hAJwOkntqBLiWyFFNmgokdoNH170wn88JMXs4AEg=";
         ldflags = [
           "-s"
           "-w"
