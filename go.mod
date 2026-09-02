@@ -4,7 +4,7 @@ go 1.27
 
 require (
 	github.com/google/uuid v1.6.0
-	github.com/pressly/goose/v3 v3.27.3
+	github.com/pressly/goose/v3 v3.28.0
 	go.followtheprocess.codes/cli v0.21.1
 	go.followtheprocess.codes/msg v1.10.0
 	go.followtheprocess.codes/test v1.4.0
