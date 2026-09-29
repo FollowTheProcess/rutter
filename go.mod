@@ -8,7 +8,7 @@ require (
 	go.followtheprocess.codes/cli v0.21.1
 	go.followtheprocess.codes/msg v1.10.0
 	go.followtheprocess.codes/test v1.4.0
-	modernc.org/sqlite v1.57.0
+	modernc.org/sqlite v1.60.1
 )
 
 require (
@@ -21,10 +21,10 @@ require (
 	go.followtheprocess.codes/diff v0.2.0 // indirect
 	go.followtheprocess.codes/hue v1.2.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/sync v0.22.0 // indirect
-	golang.org/x/sys v0.47.0 // indirect
+	golang.org/x/sync v0.23.0 // indirect
+	golang.org/x/sys v0.48.0 // indirect
 	golang.org/x/term v0.45.0 // indirect
-	modernc.org/libc v1.75.6 // indirect
+	modernc.org/libc v1.77.1 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.12.1 // indirect
 )
