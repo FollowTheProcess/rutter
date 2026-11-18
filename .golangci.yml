@@ -73,9 +73,8 @@ linters:
 
     exhaustive:
       check:
-        - map
+        - mapliteral
         - switch
-      default-signifies-exhaustive: true
 
     gosec:
       excludes:
