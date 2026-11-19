@@ -12,7 +12,6 @@ _: {
           goreleaser
           gotools
           just
-          nilaway
           nix-update
           pkgsite
           sqlfluff
