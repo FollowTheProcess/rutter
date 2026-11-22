@@ -8,7 +8,7 @@ require (
 	go.followtheprocess.codes/cli v0.21.1
 	go.followtheprocess.codes/msg v1.10.0
 	go.followtheprocess.codes/test v1.4.0
-	modernc.org/sqlite v1.62.0
+	modernc.org/sqlite v1.63.0
 )
 
 require (
